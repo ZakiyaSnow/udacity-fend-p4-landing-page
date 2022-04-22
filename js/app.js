@@ -13,50 +13,51 @@
  * 
 */
 
-/**
- * Comments should be present at the beginning of each procedure and class.
- * Great to have comments before crucial code sections within the procedure.
-*/
+const navbar = document.getElementById('navbar__list');
+const sections = document.querySelectorAll('[data-nav]');
 
-/**
- * Define Global Variables
- * 
-*/
+const buildNav = () => {
+  // Build nav menu links based on number of section on the document 
+  sections.forEach(section => {
+    const nav = document.createElement('li');
+    nav.setAttribute('data-view', section.id);
+
+    const menuLink = document.createElement('a');
+    menuLink.classList.add('menu__link');
+    menuLink.href = `#${section.id}`;
+    menuLink.innerText = section.getAttribute('data-nav');
+    
+    nav.append(menuLink);
+    navbar.appendChild(nav);
+  });
+};
+
+const onScroll = (e) => {
+  sections.forEach(section => {
+    // Get section boundaries
+    const sectionBounds = section.getBoundingClientRect();
+    // Section is considered within viewport if top of section is at least
+    // one-third into the viewport 
+    const inViewport = sectionBounds.top <= Math.floor(window.innerHeight / 3);
+      
+    if (inViewport) {
+      // Highlight section
+      section.classList.add('your-active-class');
+
+      // Highlight corresponding nav menu item
+      navbar.childNodes.forEach(item => {
+        if (inViewport && item.getAttribute('data-view') === section.id) {
+          item.style.background = 'lightgreen';
+        } else {
+          item.style.background = 'white';
+        }
+      });
+    } else {
+      section.classList.remove('your-active-class');
+    }
+  });
+};
 
 
-/**
- * End Global Variables
- * Start Helper Functions
- * 
-*/
-
-
-
-/**
- * End Helper Functions
- * Begin Main Functions
- * 
-*/
-
-// build the nav
-
-
-// Add class 'active' to section when near top of viewport
-
-
-// Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
-
+window.addEventListener('DOMContentLoaded', buildNav);
+window.addEventListener('scroll', onScroll);

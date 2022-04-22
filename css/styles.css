@@ -18,6 +18,9 @@ body {
     color: #fff;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+}
 
 /* Typeography General*/
 h1 {

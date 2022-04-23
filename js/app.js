@@ -21,10 +21,14 @@ const buildNav = () => {
   sections.forEach(section => {
     const nav = document.createElement('li');
     nav.setAttribute('data-view', section.id);
+    nav.addEventListener('click', () => {
+      document.getElementById(section.id).scrollIntoView({ 
+        behavior: 'smooth' 
+      });
+    });
 
     const menuLink = document.createElement('a');
     menuLink.classList.add('menu__link');
-    menuLink.href = `#${section.id}`;
     menuLink.innerText = section.getAttribute('data-nav');
     
     nav.append(menuLink);
@@ -36,24 +40,22 @@ const onScroll = (e) => {
   sections.forEach(section => {
     // Get section boundaries
     const sectionBounds = section.getBoundingClientRect();
-    // Section is considered within viewport if top of section is at least
-    // one-third into the viewport 
-    const inViewport = sectionBounds.top <= Math.floor(window.innerHeight / 3);
+    const inViewport = sectionBounds.top >= 0 && sectionBounds.bottom <= window.innerHeight;
       
     if (inViewport) {
       // Highlight section
-      section.classList.add('your-active-class');
+      section.classList.add('active');
 
       // Highlight corresponding nav menu item
       navbar.childNodes.forEach(item => {
         if (inViewport && item.getAttribute('data-view') === section.id) {
-          item.style.background = 'lightgreen';
+          item.classList.add('nav-active');
         } else {
-          item.style.background = 'white';
+          item.classList.remove('nav-active');
         }
       });
     } else {
-      section.classList.remove('your-active-class');
+      section.classList.remove('active');
     }
   });
 };
